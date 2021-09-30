@@ -16,8 +16,8 @@ namespace MineSweeper
         int nColunas = 3;
         Button[,] tabuleiro;
         int[,] bombas;
-        int largura = 200;
-        int altura = 200;
+        int largura = 100;
+        int altura = 100;
         bool primeira_vez = true;
 
         public Form1()
@@ -54,13 +54,15 @@ namespace MineSweeper
         {
             Button tabuleiro_clicado = (Button)sender;
 
-            // A partir do nome do tabuleiro_clicado consigo saber o X e Y clicados
+            String nome_tabuleiro = tabuleiro_clicado.Name;
+            int pos = nome_tabuleiro.IndexOf(':');
+            int linha_clicada = Int32.Parse(nome_tabuleiro.Substring(0, pos));
+            int coluna_clicada = Int32.Parse(nome_tabuleiro.Substring(pos+1));
 
             if (primeira_vez)
             {
                 primeira_vez = false;
                 geraBombas(linha_clicada, coluna_clicada);
-                //geraBombas(linha_clicada, coluna_clicada);
             }
             else
             {
@@ -69,9 +71,12 @@ namespace MineSweeper
             
         }
 
-        public void geraBombas()
+        // Esta função gera um número aleatório de bombas
+        // (que coloca na variável global: bombas)
+        // Mas nunca na posição X: linha_clicada e Y: coluna_clicada
+        public void geraBombas(int linha_clicada, int coluna_clicada)
         {
-            int totalBombas = 5;
+            int totalBombas = 8;
 
             int bombasColocadas = 0;
                
@@ -82,8 +87,13 @@ namespace MineSweeper
                 int bombaLinha = fabricaBombas.Next(0, nLinhas);
                 int bombaColuna = fabricaBombas.Next(0, nColunas);
 
-                if (bombas[bombaLinha, bombaColuna] == 0)
-                {
+                //if (bombas[bombaLinha, bombaColuna] == 0 &&
+                //        (linha_clicada != bombaLinha ||
+                //        coluna_clicada != bombaColuna)) { 
+                if (!(bombas[bombaLinha,bombaColuna]==1 || 
+                       (linha_clicada == bombaLinha && 
+                       coluna_clicada == bombaColuna)))
+                {               
                     bombas[bombaLinha, bombaColuna] = 1;
                     bombasColocadas++;
                     tabuleiro[bombaLinha, bombaColuna].Text = "B";
