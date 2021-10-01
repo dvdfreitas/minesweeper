@@ -12,8 +12,8 @@ namespace MineSweeper
 {
     public partial class Form1 : Form
     {
-        int nLinhas = 3;
-        int nColunas = 3;
+        int nLinhas = 5;
+        int nColunas = 5;
         Button[,] tabuleiro;
         int[,] bombas;
         int largura = 100;
@@ -64,11 +64,31 @@ namespace MineSweeper
                 primeira_vez = false;
                 geraBombas(linha_clicada, coluna_clicada);
             }
+
+            int bombas_volta = 0;
+            if (bombas[linha_clicada, coluna_clicada] == 1)
+                MessageBox.Show("Game over");
             else
             {
+                if (linha_clicada - 1 >=0 && coluna_clicada -1 >=0 && bombas[linha_clicada - 1, coluna_clicada - 1] == 1)
+                        bombas_volta++;
+                if (linha_clicada - 1 >= 0 && bombas[linha_clicada - 1, coluna_clicada] == 1)
+                    bombas_volta++;
+                if (linha_clicada - 1 >= 0 && coluna_clicada + 1 < nColunas && bombas[linha_clicada - 1, coluna_clicada + 1] == 1)
+                    bombas_volta++;
+                if (coluna_clicada - 1 >= 0 && bombas[linha_clicada, coluna_clicada - 1] == 1)
+                    bombas_volta++;
+                if (coluna_clicada + 1 < nColunas && bombas[linha_clicada, coluna_clicada + 1] == 1)
+                    bombas_volta++;
+                if (linha_clicada + 1 < nLinhas && coluna_clicada - 1 >= 0 && bombas[linha_clicada + 1, coluna_clicada - 1] == 1)
+                    bombas_volta++;
+                if (linha_clicada + 1 < nLinhas && bombas[linha_clicada + 1, coluna_clicada] == 1)
+                    bombas_volta++;
+                if (linha_clicada + 1 < nLinhas && coluna_clicada + 1 < nColunas && bombas[linha_clicada + 1, coluna_clicada + 1] == 1)
+                    bombas_volta++;
+                MessageBox.Show(bombas_volta + "");
 
             }
-            
         }
 
         // Esta função gera um número aleatório de bombas
