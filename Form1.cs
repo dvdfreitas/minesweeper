@@ -12,13 +12,16 @@ namespace MineSweeper
 {
     public partial class Form1 : Form
     {
-        int nLinhas = 5;
-        int nColunas = 5;
+        int nLinhas = 1;
+        int nColunas = 3;
         Button[,] tabuleiro;
         int[,] bombas;
         int largura = 100;
         int altura = 100;
         bool primeira_vez = true;
+        int pos_vazias = 0;
+        int totalBombas = 1;
+
 
         public Form1()
         {
@@ -86,9 +89,13 @@ namespace MineSweeper
                     bombas_volta++;
                 if (linha_clicada + 1 < nLinhas && coluna_clicada + 1 < nColunas && bombas[linha_clicada + 1, coluna_clicada + 1] == 1)
                     bombas_volta++;
-                MessageBox.Show(bombas_volta + "");
+                tabuleiro[linha_clicada, coluna_clicada].Text = bombas_volta + "";
 
             }
+            pos_vazias++;
+
+            if (pos_vazias == nLinhas * nColunas - totalBombas)
+                MessageBox.Show("Ganhou");
         }
 
         // Esta função gera um número aleatório de bombas
@@ -96,7 +103,6 @@ namespace MineSweeper
         // Mas nunca na posição X: linha_clicada e Y: coluna_clicada
         public void geraBombas(int linha_clicada, int coluna_clicada)
         {
-            int totalBombas = 8;
 
             int bombasColocadas = 0;
                
@@ -107,16 +113,13 @@ namespace MineSweeper
                 int bombaLinha = fabricaBombas.Next(0, nLinhas);
                 int bombaColuna = fabricaBombas.Next(0, nColunas);
 
-                //if (bombas[bombaLinha, bombaColuna] == 0 &&
-                //        (linha_clicada != bombaLinha ||
-                //        coluna_clicada != bombaColuna)) { 
                 if (!(bombas[bombaLinha,bombaColuna]==1 || 
                        (linha_clicada == bombaLinha && 
                        coluna_clicada == bombaColuna)))
                 {               
                     bombas[bombaLinha, bombaColuna] = 1;
                     bombasColocadas++;
-                    tabuleiro[bombaLinha, bombaColuna].Text = "B";
+                    //tabuleiro[bombaLinha, bombaColuna].Text = "B";
                 }
             }
 
