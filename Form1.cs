@@ -12,8 +12,8 @@ namespace MineSweeper
 {
     public partial class Form1 : Form
     {
-        int nLinhas = 1;
-        int nColunas = 3;
+        int nLinhas = 5;
+        int nColunas = 5;
         Button[,] tabuleiro;
         int[,] bombas;
         int largura = 100;
@@ -21,7 +21,12 @@ namespace MineSweeper
         bool primeira_vez = true;
         int pos_vazias = 0;
         int totalBombas = 1;
-
+        int margem = 100;
+        // Define a altura dos botões de controlo (não do tabuleiro)
+        int altura_button = 50;
+        TextBox larguraBox = new TextBox();
+        TextBox alturaBox = new TextBox();
+        
 
         public Form1()
         {
@@ -30,6 +35,34 @@ namespace MineSweeper
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            larguraBox.Text = nColunas + "";
+            alturaBox.Text = nLinhas + "";
+
+            Button startButton = new Button();
+            startButton.Left = nColunas * largura + margem;
+            startButton.Text = "Start";
+            startButton.Click += new EventHandler(inicia_jogo);
+            Controls.Add(startButton);
+
+            nLinhas = Int32.Parse(alturaBox.Text);
+            //TextBox larguraBox = new TextBox();
+            //TextBox alturaBox = new TextBox();
+            alturaBox.Left = nColunas * largura + margem;
+            larguraBox.Left = nColunas * largura + margem;
+            larguraBox.Top = altura_button;
+            alturaBox.Top = 2*altura_button;
+
+            Controls.Add(larguraBox);
+            Controls.Add(alturaBox);
+
+
+        }
+
+        private void inicia_jogo(object sender, EventArgs e)
+        {
+            nLinhas = Int32.Parse(alturaBox.Text);
+            nColunas = Int32.Parse(larguraBox.Text);
+
             tabuleiro = new Button[nLinhas, nColunas];
             bombas = new int[nLinhas, nColunas];
 
@@ -50,8 +83,9 @@ namespace MineSweeper
                     Controls.Add(tabuleiro[linha, coluna]);
                 }
             }
-
         }
+
+
 
         private void Tabuleiro_Click(object sender, EventArgs e)
         {
