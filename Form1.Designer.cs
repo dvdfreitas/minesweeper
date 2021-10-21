@@ -29,21 +29,35 @@ namespace MineSweeper
         /// </summary>
         private void InitializeComponent()
         {
+            this.debug_bombas = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
+            // 
+            // debug_bombas
+            // 
+            this.debug_bombas.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.debug_bombas.Location = new System.Drawing.Point(588, 124);
+            this.debug_bombas.Multiline = true;
+            this.debug_bombas.Name = "debug_bombas";
+            this.debug_bombas.Size = new System.Drawing.Size(209, 189);
+            this.debug_bombas.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.debug_bombas);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
+
+        private System.Windows.Forms.TextBox debug_bombas;
     }
 }
 

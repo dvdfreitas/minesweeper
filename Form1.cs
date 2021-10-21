@@ -27,10 +27,13 @@ namespace MineSweeper
         TextBox larguraBox = new TextBox();
         TextBox alturaBox = new TextBox();
         
-
+        
         public Form1()
         {
             InitializeComponent();
+            this.BackColor = Color.Bisque;
+            
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -55,7 +58,7 @@ namespace MineSweeper
             Controls.Add(larguraBox);
             Controls.Add(alturaBox);
 
-
+           
         }
 
         private void inicia_jogo(object sender, EventArgs e)
@@ -83,6 +86,8 @@ namespace MineSweeper
                     Controls.Add(tabuleiro[linha, coluna]);
                 }
             }
+            int padding = 300; // Deve ser dinâmic
+            this.Size = new Size(nLinhas * altura + padding, nColunas * largura + padding);
         }
 
 
@@ -123,6 +128,10 @@ namespace MineSweeper
                     bombas_volta++;
                 if (linha_clicada + 1 < nLinhas && coluna_clicada + 1 < nColunas && bombas[linha_clicada + 1, coluna_clicada + 1] == 1)
                     bombas_volta++;
+
+                if (bombas_volta == 0)
+                    MessageBox.Show("Zero");
+
                 tabuleiro[linha_clicada, coluna_clicada].Text = bombas_volta + "";
 
             }
@@ -157,6 +166,17 @@ namespace MineSweeper
                 }
             }
 
+            for (int linha = 0; linha < nLinhas; linha++)
+            {
+                for (int coluna = 0; coluna < nColunas; coluna++)
+                {
+                    debug_bombas.Text += bombas[linha, coluna];
+                }
+
+                debug_bombas.Text += System.Environment.NewLine;
+            }
         }
+
+        
     }
 }
