@@ -16,11 +16,12 @@ namespace MineSweeper
         int nColunas = 5;
         Button[,] tabuleiro;
         int[,] bombas;
+        int[,] bombasEmRedor;
         int largura = 100;
         int altura = 100;
         bool primeira_vez = true;
         int pos_vazias = 0;
-        int totalBombas = 1;
+        int totalBombas = 10;
         int margem = 100;
         // Define a altura dos botões de controlo (não do tabuleiro)
         int altura_button = 50;
@@ -68,6 +69,7 @@ namespace MineSweeper
 
             tabuleiro = new Button[nLinhas, nColunas];
             bombas = new int[nLinhas, nColunas];
+            bombasEmRedor = new int[nLinhas, nColunas];
 
             for (int linha = 0; linha < nLinhas; linha++)
             {
@@ -105,6 +107,7 @@ namespace MineSweeper
             {
                 primeira_vez = false;
                 geraBombas(linha_clicada, coluna_clicada);
+                calculaMatrizBombasVolta();
             }
 
             int bombas_volta = 0;
@@ -112,22 +115,7 @@ namespace MineSweeper
                 MessageBox.Show("Game over");
             else
             {
-                if (linha_clicada - 1 >=0 && coluna_clicada -1 >=0 && bombas[linha_clicada - 1, coluna_clicada - 1] == 1)
-                        bombas_volta++;
-                if (linha_clicada - 1 >= 0 && bombas[linha_clicada - 1, coluna_clicada] == 1)
-                    bombas_volta++;
-                if (linha_clicada - 1 >= 0 && coluna_clicada + 1 < nColunas && bombas[linha_clicada - 1, coluna_clicada + 1] == 1)
-                    bombas_volta++;
-                if (coluna_clicada - 1 >= 0 && bombas[linha_clicada, coluna_clicada - 1] == 1)
-                    bombas_volta++;
-                if (coluna_clicada + 1 < nColunas && bombas[linha_clicada, coluna_clicada + 1] == 1)
-                    bombas_volta++;
-                if (linha_clicada + 1 < nLinhas && coluna_clicada - 1 >= 0 && bombas[linha_clicada + 1, coluna_clicada - 1] == 1)
-                    bombas_volta++;
-                if (linha_clicada + 1 < nLinhas && bombas[linha_clicada + 1, coluna_clicada] == 1)
-                    bombas_volta++;
-                if (linha_clicada + 1 < nLinhas && coluna_clicada + 1 < nColunas && bombas[linha_clicada + 1, coluna_clicada + 1] == 1)
-                    bombas_volta++;
+                bombas_volta = calculaBombasVolta(linha_clicada, coluna_clicada);
 
                 if (bombas_volta == 0)
                     MessageBox.Show("Zero");
@@ -140,6 +128,45 @@ namespace MineSweeper
             if (pos_vazias == nLinhas * nColunas - totalBombas)
                 MessageBox.Show("Ganhou");
         }
+
+        public void calculaMatrizBombasVolta()
+        {
+            debugVolta.Text = "";
+            for (int linha=0; linha < nLinhas; linha++)
+            {
+                for (int coluna=0; coluna < nColunas; coluna++)
+                {
+                    int nBombas = calculaBombasVolta(linha, coluna);
+                    debugVolta.Text += nBombas;
+                }
+                debugVolta.Text += System.Environment.NewLine;
+            }
+        }
+
+
+        public int calculaBombasVolta(int x, int y)
+        {
+            int bombas_volta = 0;
+            if (x - 1 >= 0 && y - 1 >= 0 && bombas[x - 1, y - 1] == 1)
+                bombas_volta++;
+            if (x - 1 >= 0 && bombas[x - 1, y] == 1)
+                bombas_volta++;
+            if (x - 1 >= 0 && y + 1 < nColunas && bombas[x - 1, y + 1] == 1)
+                bombas_volta++;
+            if (y - 1 >= 0 && bombas[x, y - 1] == 1)
+                bombas_volta++;
+            if (y + 1 < nColunas && bombas[x, y + 1] == 1)
+                bombas_volta++;
+            if (x + 1 < nLinhas && y - 1 >= 0 && bombas[x + 1, y - 1] == 1)
+                bombas_volta++;
+            if (x + 1 < nLinhas && bombas[x + 1, y] == 1)
+                bombas_volta++;
+            if (x + 1 < nLinhas && y + 1 < nColunas && bombas[x + 1, y + 1] == 1)
+                bombas_volta++;
+
+            return bombas_volta;
+        }
+
 
         // Esta função gera um número aleatório de bombas
         // (que coloca na variável global: bombas)
@@ -175,8 +202,13 @@ namespace MineSweeper
 
                 debug_bombas.Text += System.Environment.NewLine;
             }
+
+
         }
 
-        
+        private void debugVolta_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
